@@ -1,3 +1,6 @@
 data/
 *.sif
 *.out
+checkpoints/
+*.pt 
+

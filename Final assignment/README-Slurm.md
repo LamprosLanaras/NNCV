@@ -85,6 +85,7 @@ Example:
 ```env
 WANDB_API_KEY=xxxxxxxxxxxxxxxxxxxxx
 WANDB_DIR=/home/<username>/wandb
+```
 
 ## Step 4: Submit a Job to the Cluster
 
