@@ -3,4 +3,4 @@ data/
 *.out
 checkpoints/
 *.pt 
-
+*.tar
