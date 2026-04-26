@@ -147,3 +147,32 @@ main.sh                  # HPC command router
 jobscript_slurm.sh       # Slurm submission script
 Dockerfile               # Challenge submission image
 ```
+
+## Author and Verification
+
+- TU/e email: l.lanaras@student.tue.nl
+
+
+### Peak Performance Models
+
+| Model | Challenge Server Name |
+|---|---|
+| SegFormer baseline | `LaNet_PP_v1` |
+| AugSegFormer | `LaNet_PP_v3` |
+| UPerFormer | `LaNet_Lovasz_Uper` |
+| Aux-Lovász UPerFormer | `AuxLovászUperFormer` |
+
+### Efficiency Models
+
+| Model | Challenge Server Name |
+|---|---|
+| Fast-SCNN baseline | `LaNet_RT_v2.6` |
+| C-FastSCNN | `LaNet_t4_no_kd` |
+| KD-C-FastSCNN | `LaNet_t4_kd_0.2_0.9` |
+
+## Top-1 submission
+
+Our **KD-C-FastSCNN** efficiency model ranked the highest in the benchmark:
+
+```text
+LaNet_t4_kd_0.2_0.9 🏆
