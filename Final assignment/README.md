@@ -1,85 +1,149 @@
-# Final Assignment: Cityscape Challenge  
+# On Neural Networks for Semantic Segmentation
 
-Welcome to the **Cityscape Challenge**, the final project for this course!  
+This repository contains the implementation pipeline for the NNCV final assignment.
+The work is divided into two research tracks:
 
-In this assignment, you'll put your knowledge of Neural Networks (NNs) for computer vision into action by tackling real-world problems using the **CityScapes dataset**. This dataset contains large-scale, high-quality images of urban environments, making it perfect for tasks like **semantic segmentation** and **object detection**.  
+- **Peak Performance**
+- **Efficiency** 
 
-This challenge is designed to push your skills further, focusing on practical and often under-explored issues crucial for deploying computer vision models in real-world scenarios.  
-
----
-
-## Benchmarks  
-
-The competition comprises four benchmarks, each targeting a specific aspect of model performance:  
-
-1. **Peak performance**  
-   This benchmark evaluates your model's segmentation accuracy on a clean, standardized test set. Your goal is to achieve the highest segmentation scores here. **Everyone should submit a model to this benchmark optimized for maximum performance**. However, it's crucial to implement changes thoughtfully and be able to justify them in your research paper. Ultimately, the focus should be on the scientific contributions of your adaptations rather than solely aiming for the highest score.
-
-The following benchmarks 2–4 are optional, and **you should select one** to compare against the Peak Performance benchmark. This allows you to analyze how your model performs under different conditions and gain deeper insights beyond just optimizing for the highest score.
-
-2. **Robustness**  
-   This benchmark tests how well your model performs under challenging conditions, such as changes in lighting, weather, or image quality. Consistency is key in this category.  
-
-3. **Efficiency**  
-   Practical applications often require compact models. This benchmark emphasizes creating smaller models that maintain acceptable performance. It’s particularly relevant for edge devices where large models are infeasible.  
-
-4. **Out-of-distribution detection**  
-   Models often encounter data that differs from the training distribution, leading to unreliable predictions. This benchmark evaluates your model's ability to detect and handle such out-of-distribution samples.  
-
-> **IMPORTANT NOTE**: The **Peak Permomance** benchmark will also serve as the baseline server, and all participants must submit a baseline model here. This means that you can just train the already provided model in the repo. The training code for this model is also already provided. The baseline submission serves two purposes: ensuring that everyone is familiar with working on an HPC cluster and providing a reference point for evaluating the impact of different adaptations in your other benchmark submissions (you need to show these improvements compared to the baseline in your report!). The Baseline benchmark will close on **Tuesday, March 17, at 11:59 P.M. (GMT+1)**. To avoid last-minute issues, start preparing your submission early. This will also give you time to ask questions during the scheduled computer classes if needed.
+Training is intended to run on an **HPC cluster** using **Slurm**. Final evaluation is performed through **Docker challenge submissions**.
 
 ---
 
-## Deliverables  
+## 📂 Project Structure
 
-Your final submission will consist of the following:  
-
-### 1. Research paper  
-Write a **3-4 page research paper** in [IEEE double-column format](https://www.overleaf.com/latex/templates/ieee-conference-template/grfzhhncsfqn), addressing (at least) the following:  
-
-- **Abstract**: Summarize the current problems, your key steps for addressing them and your main findings in about 100-300 words.
-- **Introduction**: Present the problem, challenges, and potential solutions based on existing literature.  
-- **Methods**: Describe your dataset(s), outline the baseline approach using an off-the-shelf segmentation model and define the enhancements you made for the specific benchmarks you participated.  
-- **Results**: Show and describe your results based on performance metrics and examples. Use figures and tables to support your findings. 
-- **Discussion**: Discuss the impact and potential of your main findings. Also discuss limitations and suggest future improvements.
-
-> **Submission**: Submit your paper as a PDF document via **Canvas**.
-
-The paper will be graded based on clarity, experimental design, insight, and originality.  
-
-### 2. Code repository  
-Push all relevant code to a **public GitHub repository** with a README.md file detailing:  
-- Required libraries and installation instructions.  
-- Steps to run your code.  
-- Your Codalab username and TU/e email address for correct mapping across systems.  
-
-### 3. Challenge platform submissions  
-The Cityscape Challenge will be hosted on a **dedicated course compute platform** (instead of Codalab used in previous years).
-
-You will receive clear, step-by-step instructions for making submission once the final assignment begins.
+```text
+NNCV_Final_Assignment/
+├── models/
+│   ├── peak_performance/      # SegFormer, UPerNet, Aux-Lovász UPerFormer
+│   └── efficiency/            # Fast-SCNN and compressed Fast-SCNN variants
+├── weights/                   # Trained .pt checkpoints
+├── local_data/                # Small local image folder for inference testing
+├── local_output/              # Local prediction outputs
+├── train_peak.py              # Trainer for peak-performance models
+├── train_efficiency.py        # Trainer for efficiency and KD models
+├── predict_peak.py            # Inference for peak-performance models
+├── predict_efficiency.py      # Inference for efficiency models
+├── jobscript_slurm.sh         # Slurm job script
+├── main.sh                    # HPC/Apptainer entry point
+├── Dockerfile                 # Docker submission image definition
+└── requirements.txt           # Python dependencies
+```
 
 ---
 
-## Grading and Bonus Points  
+## 📚 Documentation
 
-The final assignment accounts for **50% of your course grade**. Additionally, bonus points are available:  
+Detailed setup and submission instructions are kept in separate guide files:
 
-- **Top 3 in any benchmark**: +0.25 to your final assignment grade.  
-- **Best performance in any benchmark**: +0.5 to your final assignment grade.  
+```text
+SLURM_README.md              # Running jobs on the Slurm HPC cluster
+CHALLENGE_SUBMISSION.md      # Building, testing, exporting, and submitting Docker images
+```
 
-For example, achieving the best performance in 'Peak Performance' and a top 3 spot in another benchmark will earn you a 0.75 bonus.  
 
-> **Note**: The bonus is optional. A great report with an innovative solution that doesn't rank highly can still earn a perfect score (10).  
+## 📁 Data Structure
+
+The training scripts expect the Cityscapes dataset to follow this structure:
+
+```text
+data/cityscapes/
+├── leftImg8bit/
+│   ├── train/
+│   └── val/
+└── gtFine/
+    ├── train/
+    └── val/
+```
+
+The dataset is downloaded and prepared on the HPC following the Slurm setup guide.
 
 ---
 
-## Important Notes  
+## 🚀 Peak Performance
 
-- Ensure a proper **train-validation split** of the CityScapes dataset.  
-- Training your model may take multiple hours; plan accordingly.  
-- Use ideas from literature but remember to **cite all sources**. Plagiarism will not be tolerated.  
-- For questions or challenges, use the **Discussions** section of this repository to collaborate with peers.  
+The Peak Performance track focuses on improving segmentation accuracy.
+
+Model progression:
+
+```text
+SegFormer-B5 → AugSegformer → UPerFormer → Aux-Lovász UPerFormer
+```
+
+### Supported Variants
+
+```text
+baseline
+augsegformer
+uperformer
+auxlovasz_uperformer
+```
+
+
+### Example Training Command
+
+This command is intended to be executed inside the HPC container through `main.sh`:
+
+```bash
+python train_peak.py --variant auxlovasz_uperformer --experiment-id final-peak-run
+```
+
+### Example Local Inference Command
+
+```bash
+python predict_peak.py \
+    --variant auxlovasz_uperformer \
+    --weights_path ./weights/best_peak.pt \
+    --input_dir ./local_data \
+    --output_dir ./local_output
+```
 
 ---
 
-We wish you the best of luck in this challenge and are excited to see the innovative solutions you develop! 🚀
+## ⚡ Efficiency
+
+The Efficiency track focuses on real-time semantic segmentation.
+
+We use a Fast-SCNN as baseline and the stick with a compressed Fast-SCNN variant architecture. To this compressed variant, we perform Knowledge Distillation from a SegFormer-B5 teacher.
+
+### Supported Variants
+
+```text
+fastscnn
+c_fastscnn
+kd_c_fastscnn
+```
+
+### Example Training Command
+
+This command is intended to be executed inside the HPC container through `main.sh`:
+
+```bash
+python train_efficiency.py --variant kd_c_fastscnn --teacher-weights ./weights/segformer_teacher.pt
+```
+
+### Example Local Inference Command
+
+```bash
+python predict_efficiency.py \
+    --variant kd_c_fastscnn \
+    --weights_path ./weights/best_efficiency.pt \
+    --input_dir ./local_data \
+    --output_dir ./local_output
+```
+
+---
+
+
+
+## ✅ Main Entry Points
+
+```text
+train_peak.py            # Peak-performance training
+train_efficiency.py      # Efficiency/KD training
+predict_peak.py          # Peak-performance inference
+predict_efficiency.py    # Efficiency inference
+main.sh                  # HPC command router
+jobscript_slurm.sh       # Slurm submission script
+Dockerfile               # Challenge submission image
+```
