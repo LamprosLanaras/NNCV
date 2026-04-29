@@ -20,11 +20,14 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install --no-cache-dir \
     torch torchvision --index-url https://download.pytorch.org/whl/cu126
 RUN pip install --no-cache-dir \
-    pillow
+    pillow transformers
+
 
 WORKDIR /app
-COPY predict.py /app/predict.py
-COPY model.py /app/model.py
-COPY model.pt /app/model.pt
+COPY models/ /app/models/
+COPY weights/ /app/weights/
+COPY predict_peak.py /app/predict_peak.py
+COPY predict_efficiency.py /app/predict_efficiency.py
 
-ENTRYPOINT ["python", "/app/predict.py"]
+
+ENTRYPOINT ["python"]
