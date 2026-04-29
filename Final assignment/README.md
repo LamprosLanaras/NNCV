@@ -37,8 +37,8 @@ NNCV_Final_Assignment/
 Detailed setup and submission instructions are kept in separate guide files:
 
 ```text
-SLURM_README.md              # Running jobs on the Slurm HPC cluster
-CHALLENGE_SUBMISSION.md      # Building, testing, exporting, and submitting Docker images
+README-Slurm.md              # Running jobs on the Slurm HPC cluster
+README-Submission.md      # Building, testing, exporting, and submitting Docker images
 ```
 
 
@@ -145,7 +145,7 @@ predict_peak.py          # Peak-performance inference
 predict_efficiency.py    # Efficiency inference
 main.sh                  # HPC command router
 jobscript_slurm.sh       # Slurm submission script
-Dockerfile               # Challenge submission image
+Dockerfile               # Submission image
 ```
 
 ## Author and Verification
