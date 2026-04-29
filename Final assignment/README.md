@@ -225,7 +225,7 @@ Dockerfile               # Submission image
 
 ## Top-1 submission
 
-Our **KD-C-FastSCNN** efficiency model ranked the highest in the benchmark:
+Our **KD-C-FastSCNN** model ranked the highest in the 'Efficiency' benchmark:
 
 ```text
 LaNet_t4_kd_0.2_0.9 🏆
