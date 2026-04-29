@@ -71,13 +71,15 @@ docker build -t nncv-inference .
 
 The Peak Performance track focuses on improving segmentation accuracy.
 
+We start with the original Segformer-B5 and enhance it with various augmentantions (AugSegformer). Then, we couple the encoder of Segformer-B5 with an UPerNet decoder (UPerformer). In this new architecture, we attach an additional intermediate loss head and tweak the loss function (Aux-Lovász UPerFormer).
+
 Model progression:
 
 ```text
 SegFormer-B5 (baseline) → AugSegformer → UPerFormer → Aux-Lovász UPerFormer
 ```
 
-### Supported Variants
+### Supported Variants (Code)
 
 ```text
 baseline
@@ -134,9 +136,17 @@ python predict_peak.py \
 
 The Efficiency track focuses on real-time semantic segmentation.
 
-We use a Fast-SCNN as baseline and the stick with a compressed Fast-SCNN variant architecture. To this compressed variant, we perform Knowledge Distillation from a SegFormer-B5 teacher.
+We use a Fast-SCNN as baseline and then stick with a compressed Fast-SCNN variant architecture (C-FastSCNN). To this compressed variant, we perform Knowledge Distillation from a SegFormer-B5 teacher (KD-C-FastSCNN).
 
-### Supported Variants
+Model progression:
+
+```text
+Fast-SCNN (baseline) → C-FastSCNN → KD-C-FastSCNN
+```
+
+
+
+### Supported Variants (Code)
 
 ```text
 fastscnn
