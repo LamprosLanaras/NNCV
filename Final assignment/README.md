@@ -40,7 +40,11 @@ Detailed setup and submission instructions are kept in separate guide files:
 SLURM_README.md              # Running jobs on the Slurm HPC cluster
 CHALLENGE_SUBMISSION.md      # Building, testing, exporting, and submitting Docker images
 ```
+### 🔑 Environment Variables
+This project uses Weights & Biases for logging. Before running training, you must set up your environment variables:
 
+1. Copy the template file: `cp .env.example .env`
+2. Open the new `.env` file and replace `your_wandb_api_key_here` with your actual API key.
 
 ## 📁 Data Structure
 
