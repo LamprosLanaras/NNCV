@@ -37,8 +37,8 @@ NNCV_Final_Assignment/
 Detailed setup and submission instructions are kept in separate guide files:
 
 ```text
-README-Slurm.md              # Running jobs on the Slurm HPC cluster
-README-Submission.md      # Building, testing, exporting, and submitting Docker images
+SLURM_README.md              # Running jobs on the Slurm HPC cluster
+CHALLENGE_SUBMISSION.md      # Building, testing, exporting, and submitting Docker images
 ```
 
 
@@ -60,6 +60,13 @@ The dataset is downloaded and prepared on the HPC following the Slurm setup guid
 
 ---
 
+## 🐳 Building a Docker Image
+Before running local inference or submitting into the challenge server, build the Docker image from the root of the repository:
+
+```bash
+docker build -t nncv-inference .
+```
+
 ## 🚀 Peak Performance
 
 The Peak Performance track focuses on improving segmentation accuracy.
@@ -67,7 +74,7 @@ The Peak Performance track focuses on improving segmentation accuracy.
 Model progression:
 
 ```text
-SegFormer-B5 → AugSegformer → UPerFormer → Aux-Lovász UPerFormer
+SegFormer-B5 (baseline) → AugSegformer → UPerFormer → Aux-Lovász UPerFormer
 ```
 
 ### Supported Variants
@@ -82,13 +89,36 @@ auxlovasz_uperformer
 
 ### Example Training Command
 
-This command is intended to be executed inside the HPC container through `main.sh`:
+This command is intended to be executed inside the HPC cluster through `main.sh`:
 
 ```bash
 python train_peak.py --variant auxlovasz_uperformer --experiment-id final-peak-run
 ```
 
+
 ### Example Local Inference Command
+
+#### With Docker
+To run inference locally, we mount the `local_data` and `local_output` directories into the container so the model can read the inputs and save the predictions back to your host machine.
+
+
+
+
+
+
+
+```bash
+docker run --rm --gpus all \
+    -v "$(pwd)/local_data:/app/local_data" \
+    -v "$(pwd)/local_output:/app/local_output" \
+    nncv-inference predict_peak.py \
+    --variant auxlovasz_uperformer \
+    --weights_path ./weights/best_peak.pt \
+    --input_dir ./local_data \
+    --output_dir ./local_output
+```
+
+#### Without Docker
 
 ```bash
 python predict_peak.py \
@@ -116,13 +146,28 @@ kd_c_fastscnn
 
 ### Example Training Command
 
-This command is intended to be executed inside the HPC container through `main.sh`:
+This command is intended to be executed inside the HPC cluster through `main.sh`:
 
 ```bash
 python train_efficiency.py --variant kd_c_fastscnn --teacher-weights ./weights/segformer_teacher.pt
 ```
 
 ### Example Local Inference Command
+
+#### With Docker
+
+```bash
+docker run --rm --gpus all \
+    -v "$(pwd)/local_data:/app/local_data" \
+    -v "$(pwd)/local_output:/app/local_output" \
+    nncv-inference predict_efficiency.py \
+    --variant kd_c_fastscnn \
+    --weights_path ./weights/best_efficiency.pt \
+    --input_dir ./local_data \
+    --output_dir ./local_output
+```
+
+#### Without Docker
 
 ```bash
 python predict_efficiency.py \
@@ -131,8 +176,6 @@ python predict_efficiency.py \
     --input_dir ./local_data \
     --output_dir ./local_output
 ```
-
----
 
 
 
